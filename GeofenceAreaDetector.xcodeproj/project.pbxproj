@@ -13,6 +13,9 @@
 		164CA18E21D1844000A0C74A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 164CA18D21D1844000A0C74A /* Assets.xcassets */; };
 		164CA19121D1844000A0C74A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 164CA18F21D1844000A0C74A /* LaunchScreen.storyboard */; };
 		164CA19C21D1844000A0C74A /* GeofenceAreaDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164CA19B21D1844000A0C74A /* GeofenceAreaDetectorTests.swift */; };
+		164CA1A721D187C800A0C74A /* GeofenceAreaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164CA1A621D187C800A0C74A /* GeofenceAreaController.swift */; };
+		164CA1AA21D18A0200A0C74A /* GeofenceArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164CA1A921D18A0200A0C74A /* GeofenceArea.swift */; };
+		164CA1AE21D19C2D00A0C74A /* NetworkReachabilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164CA1AD21D19C2D00A0C74A /* NetworkReachabilityController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,9 @@
 		164CA19721D1844000A0C74A /* GeofenceAreaDetectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GeofenceAreaDetectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		164CA19B21D1844000A0C74A /* GeofenceAreaDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceAreaDetectorTests.swift; sourceTree = "<group>"; };
 		164CA19D21D1844000A0C74A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		164CA1A621D187C800A0C74A /* GeofenceAreaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceAreaController.swift; sourceTree = "<group>"; };
+		164CA1A921D18A0200A0C74A /* GeofenceArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceArea.swift; sourceTree = "<group>"; };
+		164CA1AD21D19C2D00A0C74A /* NetworkReachabilityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,11 +83,11 @@
 		164CA18521D1843D00A0C74A /* GeofenceAreaDetector */ = {
 			isa = PBXGroup;
 			children = (
+				164CA1AC21D18A1F00A0C74A /* Controllers */,
+				164CA1AB21D18A0900A0C74A /* Models */,
+				164CA1A821D189DF00A0C74A /* View and View Controllers */,
 				164CA18621D1843D00A0C74A /* AppDelegate.swift */,
-				164CA18821D1843D00A0C74A /* ViewController.swift */,
-				164CA18A21D1843D00A0C74A /* Main.storyboard */,
 				164CA18D21D1844000A0C74A /* Assets.xcassets */,
-				164CA18F21D1844000A0C74A /* LaunchScreen.storyboard */,
 				164CA19221D1844000A0C74A /* Info.plist */,
 			);
 			path = GeofenceAreaDetector;
@@ -94,6 +100,33 @@
 				164CA19D21D1844000A0C74A /* Info.plist */,
 			);
 			path = GeofenceAreaDetectorTests;
+			sourceTree = "<group>";
+		};
+		164CA1A821D189DF00A0C74A /* View and View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				164CA18F21D1844000A0C74A /* LaunchScreen.storyboard */,
+				164CA18A21D1843D00A0C74A /* Main.storyboard */,
+				164CA18821D1843D00A0C74A /* ViewController.swift */,
+			);
+			path = "View and View Controllers";
+			sourceTree = "<group>";
+		};
+		164CA1AB21D18A0900A0C74A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				164CA1A921D18A0200A0C74A /* GeofenceArea.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		164CA1AC21D18A1F00A0C74A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				164CA1AD21D19C2D00A0C74A /* NetworkReachabilityController.swift */,
+				164CA1A621D187C800A0C74A /* GeofenceAreaController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,7 +230,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				164CA1A721D187C800A0C74A /* GeofenceAreaController.swift in Sources */,
 				164CA18921D1843D00A0C74A /* ViewController.swift in Sources */,
+				164CA1AE21D19C2D00A0C74A /* NetworkReachabilityController.swift in Sources */,
+				164CA1AA21D18A0200A0C74A /* GeofenceArea.swift in Sources */,
 				164CA18721D1843D00A0C74A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
