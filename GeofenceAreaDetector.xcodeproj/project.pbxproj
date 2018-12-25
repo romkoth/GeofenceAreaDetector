@@ -16,6 +16,8 @@
 		164CA1A721D187C800A0C74A /* GeofenceAreaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164CA1A621D187C800A0C74A /* GeofenceAreaController.swift */; };
 		164CA1AA21D18A0200A0C74A /* GeofenceArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164CA1A921D18A0200A0C74A /* GeofenceArea.swift */; };
 		164CA1AE21D19C2D00A0C74A /* NetworkReachabilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164CA1AD21D19C2D00A0C74A /* NetworkReachabilityController.swift */; };
+		C16B4BB8D4E1437BCCB09FC2 /* Pods_GeofenceAreaDetectorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD05A24766C7C14388367367 /* Pods_GeofenceAreaDetectorTests.framework */; };
+		C47EF9AC2E679F5C5105319E /* Pods_GeofenceAreaDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E87144B5490033B12E85867 /* Pods_GeofenceAreaDetector.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,12 @@
 		164CA1A621D187C800A0C74A /* GeofenceAreaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceAreaController.swift; sourceTree = "<group>"; };
 		164CA1A921D18A0200A0C74A /* GeofenceArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceArea.swift; sourceTree = "<group>"; };
 		164CA1AD21D19C2D00A0C74A /* NetworkReachabilityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityController.swift; sourceTree = "<group>"; };
+		2E87144B5490033B12E85867 /* Pods_GeofenceAreaDetector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeofenceAreaDetector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C40D1C47B22B9C03C1CFC64 /* Pods-GeofenceAreaDetector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeofenceAreaDetector.release.xcconfig"; path = "Pods/Target Support Files/Pods-GeofenceAreaDetector/Pods-GeofenceAreaDetector.release.xcconfig"; sourceTree = "<group>"; };
+		702BBC5DD8F9364D395BBAA8 /* Pods-GeofenceAreaDetectorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeofenceAreaDetectorTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GeofenceAreaDetectorTests/Pods-GeofenceAreaDetectorTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CD05A24766C7C14388367367 /* Pods_GeofenceAreaDetectorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeofenceAreaDetectorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E389AB7DC26173397501E7FD /* Pods-GeofenceAreaDetector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeofenceAreaDetector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GeofenceAreaDetector/Pods-GeofenceAreaDetector.debug.xcconfig"; sourceTree = "<group>"; };
+		E54E7E60B6C4D0D5C59087A2 /* Pods-GeofenceAreaDetectorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeofenceAreaDetectorTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GeofenceAreaDetectorTests/Pods-GeofenceAreaDetectorTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C47EF9AC2E679F5C5105319E /* Pods_GeofenceAreaDetector.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C16B4BB8D4E1437BCCB09FC2 /* Pods_GeofenceAreaDetectorTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +78,8 @@
 				164CA18521D1843D00A0C74A /* GeofenceAreaDetector */,
 				164CA19A21D1844000A0C74A /* GeofenceAreaDetectorTests */,
 				164CA18421D1843D00A0C74A /* Products */,
+				174756521E76A9F59894FDEA /* Pods */,
+				633A6A541860D61684EA1826 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,6 +141,26 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		174756521E76A9F59894FDEA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E389AB7DC26173397501E7FD /* Pods-GeofenceAreaDetector.debug.xcconfig */,
+				3C40D1C47B22B9C03C1CFC64 /* Pods-GeofenceAreaDetector.release.xcconfig */,
+				702BBC5DD8F9364D395BBAA8 /* Pods-GeofenceAreaDetectorTests.debug.xcconfig */,
+				E54E7E60B6C4D0D5C59087A2 /* Pods-GeofenceAreaDetectorTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		633A6A541860D61684EA1826 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2E87144B5490033B12E85867 /* Pods_GeofenceAreaDetector.framework */,
+				CD05A24766C7C14388367367 /* Pods_GeofenceAreaDetectorTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -136,9 +168,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 164CA1A021D1844000A0C74A /* Build configuration list for PBXNativeTarget "GeofenceAreaDetector" */;
 			buildPhases = (
+				1E5A2E400081763AB8E6E2B9 /* [CP] Check Pods Manifest.lock */,
 				164CA17F21D1843D00A0C74A /* Sources */,
 				164CA18021D1843D00A0C74A /* Frameworks */,
 				164CA18121D1843D00A0C74A /* Resources */,
+				2552F000D449B58F0E8213A4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -153,6 +187,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 164CA1A321D1844000A0C74A /* Build configuration list for PBXNativeTarget "GeofenceAreaDetectorTests" */;
 			buildPhases = (
+				FFCDB8A7F9530CCC22DE778F /* [CP] Check Pods Manifest.lock */,
 				164CA19321D1844000A0C74A /* Sources */,
 				164CA19421D1844000A0C74A /* Frameworks */,
 				164CA19521D1844000A0C74A /* Resources */,
@@ -224,6 +259,75 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1E5A2E400081763AB8E6E2B9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GeofenceAreaDetector-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2552F000D449B58F0E8213A4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-GeofenceAreaDetector/Pods-GeofenceAreaDetector-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GeofenceAreaDetector/Pods-GeofenceAreaDetector-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FFCDB8A7F9530CCC22DE778F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GeofenceAreaDetectorTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		164CA17F21D1843D00A0C74A /* Sources */ = {
@@ -394,6 +498,7 @@
 		};
 		164CA1A121D1844000A0C74A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E389AB7DC26173397501E7FD /* Pods-GeofenceAreaDetector.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -412,6 +517,7 @@
 		};
 		164CA1A221D1844000A0C74A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C40D1C47B22B9C03C1CFC64 /* Pods-GeofenceAreaDetector.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -430,6 +536,7 @@
 		};
 		164CA1A421D1844000A0C74A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 702BBC5DD8F9364D395BBAA8 /* Pods-GeofenceAreaDetectorTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -451,6 +558,7 @@
 		};
 		164CA1A521D1844000A0C74A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E54E7E60B6C4D0D5C59087A2 /* Pods-GeofenceAreaDetectorTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
