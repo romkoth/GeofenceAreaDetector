@@ -8,7 +8,6 @@
 
 import Foundation
 import SystemConfiguration.CaptiveNetwork
-import Reachability
 
 public enum ReachabilityStatus {
     case unknown
@@ -47,7 +46,6 @@ public class NetworkReachabilityController: NSObject {
     }
     
     @objc func checkForReachability(notification: Notification){
-        
         guard let reachability = notification.object as? Reachability else{
             return
         }
@@ -63,6 +61,7 @@ public class NetworkReachabilityController: NSObject {
     
     class func getWiFiSsid() -> String? {
         #if targetEnvironment(simulator)
+        // It's not possible to get wifi name on simulators
         return wifiNameForSimulator
         #endif
         var ssid: String?
