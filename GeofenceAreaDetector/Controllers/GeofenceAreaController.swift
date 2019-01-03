@@ -14,7 +14,6 @@ public protocol GeofenceAreaControllerDelegate: AnyObject {
     func geofenceAreaControllerDidExitRegion(_ controller: GeofenceAreaController)
     func geofenceAreaControllerDidEnterRegion(_ controller: GeofenceAreaController)
     func geofenceAreaController(_ controller: GeofenceAreaController, didFailedWithReason: String)
-
 }
 
 enum DeviceLocationStatus {
@@ -28,7 +27,7 @@ public class GeofenceAreaController: NSObject, CLLocationManagerDelegate, Networ
     var locationManager = CLLocationManager()
     var fakeLocationManager = CLLocationManager() // For testing purposes
     var currentWiFiName = String()
-    var currentRegion : CLRegion?
+    var currentRegion : CLCircularRegion?
     var deviceLocationStatus : DeviceLocationStatus?
     let reachabilityController = NetworkReachabilityController()
     weak var delegate: GeofenceAreaControllerDelegate?
@@ -80,8 +79,17 @@ public class GeofenceAreaController: NSObject, CLLocationManagerDelegate, Networ
     // MARK: Monitoring changes from CLLocationManagerDelegate and NetworkReachabilityDelegate
     public func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion){
         print("region: \(region) registered")
-        currentRegion = region
-        manager.requestState(for: region)
+        // Lets manually force initial check, since delegate callbacks trigg only at enter or exit
+        if let myMonitoredRegion = region as? CLCircularRegion, let currentCoordinates = getDeviceCoordianates(){
+            currentRegion = myMonitoredRegion
+            if myMonitoredRegion.contains(currentCoordinates) && deviceLocationStatus != .deviceLocationStatusInside{ // this method could be called few times, let's check status value to not call delegate twice
+                deviceLocationStatus = .deviceLocationStatusInside
+                delegate?.geofenceAreaControllerDidEnterRegion(self)
+            }else if reachabilityController.reachabilityStatus != .reachableViaWiFi{
+                deviceLocationStatus = .deviceLocationStatusOutside
+                delegate?.geofenceAreaControllerDidExitRegion(self)
+            }
+        }
     }
     
     private func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
@@ -104,22 +112,6 @@ public class GeofenceAreaController: NSObject, CLLocationManagerDelegate, Networ
         }
     }
     
-    private func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion){
-      
-        if region is CLCircularRegion {
-            
-            switch state {
-            case .unknown:
-                deviceLocationStatus = .deviceLocationStatusUnknown
-            case .inside:
-                deviceLocationStatus = .deviceLocationStatusInside
-            case .outside:
-                deviceLocationStatus = .deviceLocationStatusOutside
-            }
-        }
-        
-    }
- 
     private func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         deviceLocationStatus = .deviceLocationStatusUnknown
         delegate?.geofenceAreaController(self, didFailedWithReason: error.localizedDescription)
@@ -129,18 +121,17 @@ public class GeofenceAreaController: NSObject, CLLocationManagerDelegate, Networ
         
         switch status {
         case .reachableViaWiFi:
-            
             if deviceLocationStatus != .deviceLocationStatusInside && NetworkReachabilityController.getWiFiSsid() == currentWiFiName{
                 print("Device is connected to WiFi, we can assume that device status is inside area")
                 deviceLocationStatus = .deviceLocationStatusInside
                 delegate?.geofenceAreaControllerDidEnterRegion(self)
             }
         case .unreachableViaWiFi:
-            
-            if deviceLocationStatus != .deviceLocationStatusOutside {
+            if deviceLocationStatus != .deviceLocationStatusOutside, let region = currentRegion, let currentCoordinates = getDeviceCoordianates() {
                 print("Device is unreachable via WiFi we are trying to determine state by location")
-                if let region = currentRegion {
-                    locationManager.requestState(for: region)
+                if region.contains(currentCoordinates) {
+                    print("Device location is in geofence region, but without wifi connection")
+                    delegate?.geofenceAreaControllerDidEnterRegion(self)
                 }
             }
         case .unknown:

@@ -13,13 +13,12 @@ let wifiNameForSimulator = "simulatorWiFiName" // For testing purposes
 
 class ViewController: UIViewController, GeofenceAreaControllerDelegate {
    
-    let radius: CLLocationDistance = CLLocationDistance(10.0)
-    let identifier = NSUUID().uuidString
+    let radius: CLLocationDistance = CLLocationDistance(10.0) // hardcoded radius
+    let identifier = NSUUID().uuidString // random identifier
     let geofenceAreaController = GeofenceAreaController()
 
     @IBOutlet weak var bottomLabel: UILabel!
     @IBAction func setLocationAction(_ sender: UIButton) {
-        
         if let coordinates = geofenceAreaController.getDeviceCoordianates(){
             let geofenceArea = GeofenceArea(coordinate:coordinates, radius: radius, wifiName: wifiNameForSimulator, identifier: identifier)
             geofenceAreaController.startMonitoring(geofenceArea: geofenceArea)
