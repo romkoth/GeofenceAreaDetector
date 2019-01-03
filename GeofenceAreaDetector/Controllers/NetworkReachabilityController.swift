@@ -16,26 +16,19 @@ public enum ReachabilityStatus {
     case unreachableViaWiFi
 }
 
-public protocol NetworkReachabilityDelegate {
+public protocol NetworkReachabilityDelegate: AnyObject {
 
     func networkReachabilityStatusChanged(status: ReachabilityStatus)
     
 }
 
-public class NetworkReachabilityController {
+public class NetworkReachabilityController: NSObject {
     
     var reachabilityStatus : ReachabilityStatus
-    var delegate : NetworkReachabilityDelegate?
+    weak var delegate : NetworkReachabilityDelegate?
     let reachability = Reachability()!
-    init() {
-        self.reachabilityStatus = .unknown
-        NotificationCenter.default.addObserver(self, selector:Selector(("checkForReachability:")), name: NSNotification.Name.reachabilityChanged, object: reachability)
-
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print("Unable to start reachability notifier")
-        }
+    override init() {
+        reachabilityStatus = .unknown
     }
     
     deinit {
@@ -43,7 +36,35 @@ public class NetworkReachabilityController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    func startObserving(){
+        NotificationCenter.default.addObserver(self, selector: #selector(checkForReachability(notification:)), name: .reachabilityChanged, object: reachability)
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start reachability notifier")
+        }
+    }
+    
+    @objc func checkForReachability(notification: Notification){
+        
+        guard let reachability = notification.object as? Reachability else{
+            return
+        }
+        
+        if reachability.connection == .wifi {
+            print("Reachable via WiFi")
+            delegate?.networkReachabilityStatusChanged(status: .reachableViaWiFi)
+        }else{
+            delegate?.networkReachabilityStatusChanged(status: .unreachableViaWiFi)
+            print("Not reachable or reachable via Cellular")
+        }
+    }
+    
     class func getWiFiSsid() -> String? {
+        #if targetEnvironment(simulator)
+        return wifiNameForSimulator
+        #endif
         var ssid: String?
         if let interfaces = CNCopySupportedInterfaces() as NSArray? {
             for interface in interfaces {
@@ -56,18 +77,21 @@ public class NetworkReachabilityController {
         return ssid
     }
     
-    func checkForReachability(notification: Notification){
-        
-        guard let reachability = notification.object as? Reachability else{
-            return
-        }
-        
-        if reachability.connection == .wifi {
-            delegate?.networkReachabilityStatusChanged(status: .reachableViaWiFi)
-            print("Reachable via WiFi")
-        }else{
-            delegate?.networkReachabilityStatusChanged(status: .unreachableViaWiFi)
-            print("Not reachable or reachable via Cellular")
-        }
-    }
+//    class func fetchSSIDInfo() -> String {
+//        var currentSSID = ""
+//        if let interfaces = CNCopySupportedInterfaces() {
+//            for i in 0..<CFArrayGetCount(interfaces) {
+//                let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interfaces, i)
+//                let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
+//                let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString)
+//                if let interfaceData = unsafeInterfaceData as? [String: AnyObject] {
+//                    currentSSID = interfaceData["SSID"] as! String
+//                    let BSSID = interfaceData["BSSID"] as! String
+//                    let SSIDDATA = interfaceData["SSIDDATA"] as! String
+//                    debugPrint("ssid=\(currentSSID), BSSID=\(BSSID), SSIDDATA=\(SSIDDATA)")
+//                }
+//            }
+//        }
+//        return currentSSID
+//    }
 }

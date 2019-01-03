@@ -9,11 +9,11 @@
 import Foundation
 import CoreLocation
 
-public protocol GeofenceAreaControllerDelegate {
+public protocol GeofenceAreaControllerDelegate: AnyObject {
     
-    func geofenceAreaController(_ controller: GeofenceAreaController, didExitRegion: CLRegion)
-    func geofenceAreaController(_ controller: GeofenceAreaController, didEnterRegion: CLRegion)
-    func geofenceAreaController(_ controller: GeofenceAreaController, didReceiveError: String)
+    func geofenceAreaControllerDidExitRegion(_ controller: GeofenceAreaController)
+    func geofenceAreaControllerDidEnterRegion(_ controller: GeofenceAreaController)
+    func geofenceAreaController(_ controller: GeofenceAreaController, didFailedWithReason: String)
 
 }
 
@@ -26,60 +26,69 @@ enum DeviceLocationStatus {
 public class GeofenceAreaController: NSObject, CLLocationManagerDelegate, NetworkReachabilityDelegate {
     
     var locationManager = CLLocationManager()
+    var fakeLocationManager = CLLocationManager() // For testing purposes
     var currentWiFiName = String()
     var currentRegion : CLRegion?
     var deviceLocationStatus : DeviceLocationStatus?
-    var reachabilityController = NetworkReachabilityController()
-    var delegate: GeofenceAreaControllerDelegate?
+    let reachabilityController = NetworkReachabilityController()
+    weak var delegate: GeofenceAreaControllerDelegate?
 
-     init(geofenceArea: GeofenceArea) {
+    override init() {
         super.init()
-        locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.delegate = self
+        locationManager.distanceFilter = 2
         reachabilityController.delegate = self
+
         deviceLocationStatus = .deviceLocationStatusUnknown
-        startMonitoring(geofenceArea: geofenceArea)
     }
     
-    private func startMonitoring(geofenceArea: GeofenceArea) {
+    func startMonitoring(geofenceArea: GeofenceArea) {
+        
         if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
-            delegate?.geofenceAreaController(self, didReceiveError: "Geofencing is not supported on this device!")
+            delegate?.geofenceAreaController(self, didFailedWithReason: "Geofencing is not supported on this device!")
             return
         }
-
+        
         if CLLocationManager.authorizationStatus() != .authorizedAlways {
-            delegate?.geofenceAreaController(self, didReceiveError:"You should grant permission to access the device location")
+            delegate?.geofenceAreaController(self, didFailedWithReason:"You should grant permission to access the device location")
         }
-
+        reachabilityController.startObserving()
+        
         let fenceRegion = region(with: geofenceArea)
         currentWiFiName = geofenceArea.wifiName
+        locationManager.startUpdatingLocation()
         locationManager.startMonitoring(for: fenceRegion)
     }
     
-   private func region(with geofenceArea: GeofenceArea) -> CLCircularRegion {
-        let region = CLCircularRegion(center: geofenceArea.coordinate, radius: geofenceArea.radius, identifier: geofenceArea.identifier)
-        region.notifyOnEntry = true
-        region.notifyOnExit = true
-        return region
-    }
-    
-    
-   private func stopMonitoring(geofenceArea: GeofenceArea) {
+    func stopMonitoring(geofenceArea: GeofenceArea) {
         for region in locationManager.monitoredRegions {
             guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == geofenceArea.identifier else { continue }
             locationManager.stopMonitoring(for: circularRegion)
         }
     }
     
+    func getDeviceCoordianates() -> CLLocationCoordinate2D? {
+        if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
+                return locationManager.location?.coordinate
+        }
+        return nil
+    }
     
-    // MARK: monitoring changes
+    // MARK: Monitoring changes from CLLocationManagerDelegate and NetworkReachabilityDelegate
+    public func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion){
+        print("region: \(region) registered")
+        currentRegion = region
+        manager.requestState(for: region)
+    }
+    
     private func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         
         if deviceLocationStatus != .deviceLocationStatusInside && region is CLCircularRegion{
             deviceLocationStatus = .deviceLocationStatusInside
-            currentRegion = region
-            delegate?.geofenceAreaController(self, didEnterRegion: region)
+            delegate?.geofenceAreaControllerDidEnterRegion(self)
         }
     }
     
@@ -88,18 +97,16 @@ public class GeofenceAreaController: NSObject, CLLocationManagerDelegate, Networ
         if deviceLocationStatus != .deviceLocationStatusOutside && region is CLCircularRegion{
             print("Device did exit region, will check wifi reachability")
             if NetworkReachabilityController.getWiFiSsid() != currentWiFiName{
-                print("Device is not connected to wifi named: ", currentWiFiName)
+                print("Device is not connected to wifi named:\(currentWiFiName)")
                 deviceLocationStatus = .deviceLocationStatusOutside
-                delegate?.geofenceAreaController(self, didExitRegion: region)
+                delegate?.geofenceAreaControllerDidExitRegion(self)
             }
         }
     }
     
     private func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion){
       
-        if region is CLCircularRegion{
-            
-            currentRegion = region
+        if region is CLCircularRegion {
             
             switch state {
             case .unknown:
@@ -112,10 +119,10 @@ public class GeofenceAreaController: NSObject, CLLocationManagerDelegate, Networ
         }
         
     }
-    
+ 
     private func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         deviceLocationStatus = .deviceLocationStatusUnknown
-        delegate?.geofenceAreaController(self, didReceiveError: error.localizedDescription)
+        delegate?.geofenceAreaController(self, didFailedWithReason: error.localizedDescription)
     }
     
     public func networkReachabilityStatusChanged(status: ReachabilityStatus){
@@ -124,26 +131,30 @@ public class GeofenceAreaController: NSObject, CLLocationManagerDelegate, Networ
         case .reachableViaWiFi:
             
             if deviceLocationStatus != .deviceLocationStatusInside && NetworkReachabilityController.getWiFiSsid() == currentWiFiName{
-                print("Device is connected to WiFi, we can assume that device status is inside and send last saved region")
+                print("Device is connected to WiFi, we can assume that device status is inside area")
                 deviceLocationStatus = .deviceLocationStatusInside
-                if let region = currentRegion {
-                    delegate?.geofenceAreaController(self, didEnterRegion: region)
-                }
+                delegate?.geofenceAreaControllerDidEnterRegion(self)
             }
         case .unreachableViaWiFi:
             
             if deviceLocationStatus != .deviceLocationStatusOutside {
-                print("Device is unreachable via WiFi we are trying to determine state")
+                print("Device is unreachable via WiFi we are trying to determine state by location")
                 if let region = currentRegion {
                     locationManager.requestState(for: region)
                 }
             }
         case .unknown:
-            print("Something weird is going on")
+            print("Something weird is going on with determining wifi reachability")
         }
     }
-
-
+    
+    // MMARK: private helpers
+    private func region(with geofenceArea: GeofenceArea) -> CLCircularRegion {
+        let region = CLCircularRegion(center: geofenceArea.coordinate, radius: geofenceArea.radius, identifier: geofenceArea.identifier)
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        return region
+    }
 }
 
 
