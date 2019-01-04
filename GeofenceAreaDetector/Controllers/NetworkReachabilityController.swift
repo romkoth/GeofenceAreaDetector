@@ -52,8 +52,10 @@ public class NetworkReachabilityController: NSObject {
         
         if reachability.connection == .wifi {
             print("Reachable via WiFi")
+            reachabilityStatus = .reachableViaWiFi
             delegate?.networkReachabilityStatusChanged(status: .reachableViaWiFi)
         }else{
+            reachabilityStatus = .unreachableViaWiFi
             delegate?.networkReachabilityStatusChanged(status: .unreachableViaWiFi)
             print("Not reachable or reachable via Cellular")
         }

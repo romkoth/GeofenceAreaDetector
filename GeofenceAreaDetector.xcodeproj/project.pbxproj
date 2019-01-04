@@ -100,7 +100,6 @@
 				164CA1A821D189DF00A0C74A /* View and View Controllers */,
 				164CA18621D1843D00A0C74A /* AppDelegate.swift */,
 				16C485ED21DEC03800955537 /* Reachability.swift */,
-				164CA18D21D1844000A0C74A /* Assets.xcassets */,
 				164CA19221D1844000A0C74A /* Info.plist */,
 				16010EFA21DD32B500C24D97 /* GeofenceAreaDetector.entitlements */,
 			);
@@ -119,9 +118,10 @@
 		164CA1A821D189DF00A0C74A /* View and View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				164CA18821D1843D00A0C74A /* ViewController.swift */,
+				164CA18D21D1844000A0C74A /* Assets.xcassets */,
 				164CA18F21D1844000A0C74A /* LaunchScreen.storyboard */,
 				164CA18A21D1843D00A0C74A /* Main.storyboard */,
-				164CA18821D1843D00A0C74A /* ViewController.swift */,
 			);
 			path = "View and View Controllers";
 			sourceTree = "<group>";
